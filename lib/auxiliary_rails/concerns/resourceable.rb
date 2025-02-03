@@ -199,13 +199,19 @@ module AuxiliaryRails
       end
 
       def redirect_after_update
-        if flash[:notice].blank?
-          flash[:notice] = t('update.notice',
-            resource_name: resource_class.model_name.human,
-            scope: i18n_scope)
-        end
+        flash[:notice] ||= redirect_after_update_message
 
-        redirect_to resource_path(resource)
+        redirect_to redirect_after_update_path
+      end
+
+      def redirect_after_update_message
+        t('update.notice',
+          resource_name: resource_class.model_name.human,
+          scope: i18n_scope)
+      end
+
+      def redirect_after_update_path
+        resource_path(resource)
       end
 
       def redirect_after_destroy
